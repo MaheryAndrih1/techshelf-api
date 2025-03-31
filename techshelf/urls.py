@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import health_check, api_debug_view
+from .views import health_check, api_debug_view, create_superuser
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -10,6 +10,7 @@ urlpatterns = [
     # API endpoints
     path('api/health/', health_check, name='api_health_check'),
     path('api/debug/', api_debug_view, name='api_debug'),
+    path('api/setup/create-superuser/', create_superuser, name='create_superuser'),
     path('api/users/', include('users.api_urls')),
     path('api/stores/', include('stores.api_urls')),
     path('api/products/', include('products.api_urls')),
