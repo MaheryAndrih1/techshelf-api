@@ -1,0 +1,228 @@
+@startuml
+
+' Define classes
+class User {
+  +userId: String
+  +username: String
+  +email: String
+  +password: String
+  +billingInfo: BillingInfo
+  +role: Enum
+  +login()
+  +logout()
+  +register()
+  +upgradeToSeller()
+  +addToCart(product: Product, quantity: int)
+  +purchase(cart: Cart)
+}
+
+class BillingInfo {
+  +cardNumber: String
+  +expiryDate: String
+  +cvv: String
+  +billingAddress: String
+}
+
+class Store {
+  +storeId: String
+  +storeName: String
+  +subdomainName: String
+  +products: List<Product>
+  +theme: StoreTheme
+  +userId: String
+  +addProduct(product: Product)
+  +removeProduct(productId: String)
+  +updateProduct(product: Product)
+  +setSubdomain(subdomain: String)
+  +updateTheme(theme: StoreTheme)
+}
+
+class StoreTheme {
+  +themeId: String
+  +primaryColor: String
+  +secondaryColor: String
+  +font: String
+  +logoUrl: String
+  +bannerUrl: String
+}
+
+class Product {
+  +productId: String
+  +name: String
+  +price: double
+  +stock: int
+  +category: String
+  +likes: int
+  +storeId: String
+  +updatePrice(newPrice: double)
+  +addLike()
+  +decrementStock(quantity: int)
+}
+
+class Cart {
+  +cartId: String
+  +userId: String
+  +items: List<CartItem>
+  +addItem(product: Product, quantity: int)
+  +removeItem(productId: String)
+  +checkout()
+}
+
+class CartItem {
+  +productId: String
+  +quantity: int
+}
+
+class Order {
+  +orderId: String
+  +userId: String
+  +items: List<OrderItem>
+  +totalAmount: double
+  +taxRate: double
+  +shippingCost: double
+  +paymentStatus: Enum
+  +orderStatus: Enum
+  +shippingInfo: ShippingInfo
+  +processPayment(paymentInfo: PaymentInfo)
+  +calculateTotal() : double
+}
+
+class OrderItem {
+  +productId: String
+  +quantity: int
+  +price: double
+}
+
+class Payment {
+  +paymentId: String
+  +orderId: String
+  +amount: double
+  +paymentStatus: Enum
+  +processPayment(paymentInfo: PaymentInfo)
+  +refundPayment()
+}
+
+class ShippingInfo {
+  +shippingAddress: String
+  +city: String
+  +country: String
+  +postalCode: String
+}
+
+class Promotion {
+  +promotionId: String
+  +discountCode: String
+  +discountPercentage: double
+  +expiryDate: Date
+  +applyDiscount(order: Order)
+}
+
+class Notification {
+  +notificationId: String
+  +userId: String
+  +message: String
+  +sendEmail()
+  +sendSMS()
+}
+
+class SalesReport {
+  +reportId: String
+  +storeId: String
+  +totalSales: double
+  +topProducts: List<Product>
+  +generateReport(startDate: Date, endDate: Date)
+}
+
+class Rating {
+  +ratingId: String
+  +userId: String
+  +storeId: String
+  +score: int
+  +comment: String
+  +timestamp: Date
+}
+
+class Like {
+  +likeId: String
+  +userId: String
+  +productId: String
+  +timestamp: Date
+}
+
+class Authentication {
+  +authenticate(email: String, password: String): User
+  +isAuthenticated(): boolean
+}
+
+' Define relationships
+User "1" --> "1" BillingInfo : has
+User "1" --> "0..*" Order : places
+User "1" --> "0..1" Store : owns
+Store "1" --> "0..*" Product : sells
+Store "1" --> "0..*" Rating : receives
+Store "1" --> "1" StoreTheme : has
+Cart "1" --> "0..*" CartItem : contains
+Cart "1" --> "0..1" User : belongs to
+Order "1" --> "0..*" OrderItem : contains
+Order "1" --> "1" Payment : processes
+Order "1" --> "1" ShippingInfo : has
+Order "1" --> "0..*" Promotion : applies
+Store "1" --> "0..*" SalesReport : generates
+User "1" --> "0..*" Notification : receives
+Product "1" --> "0..*" SalesReport : included in
+Product "1" --> "0..*" CartItem : added to
+Product "1" --> "0..*" OrderItem : ordered as
+User "1" --> "0..*" Rating : gives
+User "1" --> "0..*" Like : gives
+Product "1" --> "0..*" Like : receives
+
+' Notes for clarity
+note top of User
+  Users can be buyers or sellers.
+  Sellers own stores and can modify products, themes, and subdomains.
+end note
+
+note top of Store
+  Store owners can customize their subdomain, products, and store page theme.
+  Example: https://xxx.xx/store-name
+end note
+
+note top of StoreTheme
+  Store themes include colors, fonts, logos, and banners.
+end note
+
+note top of Cart
+  Guests can add items to the cart.
+  Authentication is required for checkout.
+end note
+
+note top of Payment
+  Payment is processed via Stripe.
+  Supports refunds and retries.
+end note
+
+note top of ShippingInfo
+  Captures shipping address and calculates delivery costs.
+end note
+
+note top of Promotion
+  Applies discounts to orders using discount codes.
+end note
+
+note top of Notification
+  Sends emails or SMS for order updates, promotions, etc.
+end note
+
+note top of SalesReport
+  Provides insights into sales performance and top products.
+end note
+
+note top of Rating
+  Users can rate stores with a score and optional comment.
+end note
+
+note top of Like
+  Users can like products.
+end note
+
+@enduml
