@@ -13,7 +13,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'techshelf-api.onrender.com']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -46,10 +46,29 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",     
-    "http://127.0.0.1:5173", 
-    "https://techshelf-frontend.pages.dev"   
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://techshelf-frontend.pages.dev",
 ]
+
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "authorization",
+    "content-type",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
+
 CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'techshelf.urls'
