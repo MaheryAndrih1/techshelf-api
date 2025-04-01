@@ -35,11 +35,10 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',  # Make sure this is at the top
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware', 
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',  
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -47,24 +46,25 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True  # For development, configure appropriately for production
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
-    "https://techshelf.pages.dev",  # Your Cloudflare domain
+    "https://techshelf.pages.dev",
     "http://localhost:5173",
     "http://localhost:3000",
+    "https://corsproxy.io",
 ]
 
 CORS_ALLOW_METHODS = [
     "DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT",
 ]
 
-CORS_ALLOW_HEADERS = [
-    "accept", "authorization", "content-type", "user-agent", "x-csrftoken", "x-requested-with",
-]
+CORS_EXPOSE_HEADERS = ['*']
 
-CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = [
+    '*'
+]
 
 ROOT_URLCONF = 'techshelf.urls'
 

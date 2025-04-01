@@ -11,11 +11,23 @@ import traceback
 logger = logging.getLogger(__name__)
 
 class StoreListView(APIView):
+    permission_classes = [permissions.AllowAny]
+    
     def get(self, request, *args, **kwargs):
-        logger.debug(f"Received store list request: {request.path}")
-        queryset = Store.objects.all()
-        serializer = StoreSerializer(queryset, many=True)
-        return Response(serializer.data)
+        try:
+            logger.info(f"StoreListView: Received request from {request.META.get('REMOTE_ADDR')}")
+            logger.info(f"Request path: {request.path}")
+            logger.info(f"Request headers: {request.headers}")
+            
+            queryset = Store.objects.all()
+            serializer = StoreSerializer(queryset, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            logger.error(f"StoreListView error: {str(e)}")
+            return Response(
+                {'error': 'Failed to fetch stores'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 class StoreDetailView(generics.RetrieveAPIView):
     """Get details of a specific store by subdomain"""
