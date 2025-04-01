@@ -3,18 +3,14 @@ from .api_views import (
     CartView, CartAddItemView, CartRemoveItemView, CartUpdateItemView,
     CheckoutView, OrderListView, OrderDetailView, OrderCancelView,
     ApplyPromotionView, SellerOrderListView, SellerOrderDetailView,
-    SellerOrderUpdateStatusView, MergeCartView
+    SellerOrderUpdateStatusView
 )
 
 urlpatterns = [
-    # Cart URLs
     path('cart/', CartView.as_view(), name='api_cart'),
-    path('cart/merge/', MergeCartView.as_view(), name='merge-cart'),  # Add merge endpoint
     path('cart/add/', CartAddItemView.as_view(), name='api_cart_add'),
     path('cart/remove/<str:product_id>/', CartRemoveItemView.as_view(), name='api_cart_remove'),
     path('cart/update/<str:product_id>/', CartUpdateItemView.as_view(), name='api_cart_update'),
-    
-    # Other URLs
     path('checkout/', CheckoutView.as_view(), name='api_checkout'),
     path('orders/', OrderListView.as_view(), name='api_order_list'),
     path('seller-orders/', SellerOrderListView.as_view(), name='api_seller_order_list'),
