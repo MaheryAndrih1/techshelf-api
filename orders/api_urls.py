@@ -3,7 +3,7 @@ from .api_views import (
     CartView, CartAddItemView, CartRemoveItemView, CartUpdateItemView,
     CheckoutView, OrderListView, OrderDetailView, OrderCancelView,
     ApplyPromotionView, SellerOrderListView, SellerOrderDetailView,
-    SellerOrderUpdateStatusView
+    SellerOrderUpdateStatusView, MergeCartView
 )
 
 urlpatterns = [
@@ -19,4 +19,5 @@ urlpatterns = [
     path('promotions/apply/', ApplyPromotionView.as_view(), name='api_apply_promotion'),
     path('seller-orders/<str:order_id>/', SellerOrderDetailView.as_view(), name='api_seller_order_detail'),
     path('seller-orders/<str:order_id>/update-status/', SellerOrderUpdateStatusView.as_view(), name='api_seller_order_update_status'),
+    path('cart/merge/', MergeCartView.as_view(), name='merge-cart'),
 ]
