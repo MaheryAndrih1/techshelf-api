@@ -10,13 +10,12 @@ import traceback
 # Configure logger
 logger = logging.getLogger(__name__)
 
-class StoreListView(generics.ListAPIView):
-    """List all stores with optional filtering"""
-    queryset = Store.objects.all()
-    serializer_class = StoreSerializer
-    permission_classes = [permissions.AllowAny]
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['store_name', 'subdomain_name']
+class StoreListView(APIView):
+    def get(self, request, *args, **kwargs):
+        logger.debug(f"Received store list request: {request.path}")
+        queryset = Store.objects.all()
+        serializer = StoreSerializer(queryset, many=True)
+        return Response(serializer.data)
 
 class StoreDetailView(generics.RetrieveAPIView):
     """Get details of a specific store by subdomain"""
