@@ -453,9 +453,3 @@ class MergeCartView(APIView):
                 {'error': f'Failed to merge cart: {str(e)}'}, 
                 status=status.HTTP_400_BAD_REQUEST
             )
-
-# Update URLs to include the new view
-urlpatterns = [
-    # ...existing urls...
-    path('cart/merge/', MergeCartView.as_view(), name='merge-cart'),
-]
